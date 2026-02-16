@@ -11,7 +11,7 @@ Professional airdrop management tool with drag & drop, statistics, and notificat
 - 🔍 Real-time search & filter
 
 ## 🌐 Live Demo
-[View Live](https://username.github.io/airdrop-tracker/)
+[View Live](https://heisenberg-bit/airdrop-tracker/)
 
 ## 🛠️ Usage
 1. Open the app
@@ -21,6 +21,3 @@ Professional airdrop management tool with drag & drop, statistics, and notificat
 
 ## 📸 Screenshot
 
-
-## 📄 License
-MIT License
