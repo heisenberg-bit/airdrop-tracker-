@@ -21,4 +21,6 @@ Professional airdrop management tool with drag & drop, statistics, and notificat
 4. Export your data regularly for backup
 
 ## 📸 Screenshot
-
+![Screenshot](1.jpg)
+![Screenshot](2.jpg)
+![Screenshot](3.jpg)
