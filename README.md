@@ -3,6 +3,7 @@
 Professional airdrop management tool with drag & drop, statistics, and notifications.
 
 ## ✨ Features
+- ✅ Daily Checkin
 - ✅ Drag & Drop reordering
 - 📊 Statistics Dashboard with charts
 - 🔔 Browser notifications
