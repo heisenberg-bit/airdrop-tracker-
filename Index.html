@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Airdrop Tracker PRO+ Enhanced</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,sans-serif}
+
+body{background:linear-gradient(180deg,#0b1220,#020617);color:#e2e8f0;min-height:100vh}
+.container{display:flex;min-height:100vh}
+
+.sidebar{width:240px;background:#020617;border-right:1px solid #1e293b;padding:20px;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sidebar h2{margin-bottom:20px;color:#38bdf8}
+.sidebar a{display:block;padding:10px;border-radius:8px;color:#94a3b8;text-decoration:none;margin-bottom:5px;cursor:pointer;transition:0.2s}
+.sidebar a:hover{background:#0f172a;color:white}
+.sidebar .active{background:#2563eb;color:white}
+
+.main{flex:1;padding:25px;max-width:1400px}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+
+/* Search Bar */
+.search-bar{
+    display:flex;
+    align-items:center;
+    background:#0f172a;
+    border:1px solid #1e293b;
+    border-radius:8px;
+    padding:8px 12px;
+    width:300px;
+    margin-bottom:16px;
+}
+.search-bar input{
+    background:transparent;
+    border:none;
+    color:#e2e8f0;
+    outline:none;
+    flex:1;
+    margin-left:8px;
+}
+.search-bar i{color:#64748b}
+
+.button{background:#2563eb;border:none;padding:10px 16px;border-radius:8px;color:white;cursor:pointer;transition:0.2s;font-size:14px}
+.button:hover{background:#1d4ed8}
+.button-secondary{background:#64748b}
+.button-secondary:hover{background:#475569}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:16px}
+
+.card{background:#020617;padding:18px;border-radius:12px;border:1px solid #1e293b;transition:0.2s;cursor:move}
+.card:hover{border-color:#2563eb;box-shadow:0 4px 12px rgba(37,99,235,0.1)}
+.card.dragging{opacity:0.5;transform:scale(0.95)}
+.card.drag-over{border-color:#22c55e;border-width:2px;background:#0f172a}
+
+.project{display:flex;gap:10px;align-items:center;margin-bottom:12px}
+.project img{width:36px;height:36px;border-radius:50%;object-fit:cover}
+
+.wallet{font-family:monospace;color:#22c55e;font-size:12px}
+
+/* Tags/Categories */
+.tag{
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:6px;
+    font-size:11px;
+    font-weight:600;
+    margin-right:4px;
+    margin-bottom:4px;
+}
+.tag-defi{background:#8b5cf6;color:white}
+.tag-gaming{background:#ec4899;color:white}
+.tag-nft{background:#f59e0b;color:white}
+.tag-social{background:#06b6d4;color:white}
+.tag-other{background:#6366f1;color:white}
+
+.badge-row{
+    display:flex;
+    gap:6px;
+    margin-bottom:12px;
+    flex-wrap:wrap;
+}
+
+.info-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:12px;
+    padding:12px;
+    background:#0f172a;
+    border-radius:8px;
+}
+
+.info-item{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
+
+.info-label{
+    font-size:11px;
+    color:#64748b;
+    text-transform:uppercase;
+    font-weight:500;
+    letter-spacing:0.5px;
+}
+
+.info-value{
+    font-size:14px;
+    color:#e2e8f0;
+    font-weight:500;
+}
+
+.status-check{color:#22c55e;font-weight:700;font-size:16px}
+.status-x{color:#ef4444;font-weight:700;font-size:16px}
+.reward{color:#facc15;font-weight:700;font-size:16px}
+
+.actions-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+}
+
+.icon-left, .icon-right{display:flex;gap:6px}
+
+.icon-btn{
+    background:#0f172a;
+    border:none;
+    padding:8px;
+    border-radius:8px;
+    color:#94a3b8;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    transition:0.2s;
+    position:relative;
+}
+
+.icon-btn:hover{background:#1e293b;color:#38bdf8}
+
+.icon-btn:hover::after{
+    content:attr(title);
+    position:absolute;
+    bottom:120%;
+    left:50%;
+    transform:translateX(-50%);
+    background:#020617;
+    color:#38bdf8;
+    padding:4px 8px;
+    border-radius:6px;
+    font-size:12px;
+    white-space:nowrap;
+    border:1px solid #1e293b;
+    z-index:10;
+}
+
+.badge{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600}
+.mainnet{background:#1d4ed8;color:white}
+.daily{background:#059669;color:white}
+.finished{background:#ca8a04;color:white}
+.active-badge{background:#059669;color:white}
+
+/* Statistics Dashboard */
+.stats-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:16px;
+    margin-bottom:20px;
+}
+
+.stat-card{
+    background:#020617;
+    padding:20px;
+    border-radius:12px;
+    border:1px solid #1e293b;
+}
+
+.stat-card h3{
+    font-size:14px;
+    color:#64748b;
+    margin-bottom:8px;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+}
+
+.stat-card .value{
+    font-size:32px;
+    font-weight:700;
+    color:#38bdf8;
+}
+
+.chart-container{
+    background:#020617;
+    padding:20px;
+    border-radius:12px;
+    border:1px solid #1e293b;
+    margin-bottom:20px;
+}
+
+/* Notification Banner */
+.notification{
+    position:fixed;
+    top:20px;
+    right:20px;
+    background:#020617;
+    border:1px solid #2563eb;
+    border-radius:8px;
+    padding:16px;
+    box-shadow:0 4px 12px rgba(37,99,235,0.3);
+    z-index:1000;
+    animation:slideIn 0.3s ease;
+    max-width:350px;
+}
+
+.notification.success{border-color:#22c55e}
+.notification.error{border-color:#ef4444}
+
+@keyframes slideIn{
+    from{transform:translateX(400px);opacity:0}
+    to{transform:translateX(0);opacity:1}
+}
+
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;z-index:100}
+.modal-content{background:#0f172a;padding:20px;border-radius:12px;width:400px;max-height:90vh;overflow-y:auto}
+.modal-content input, .modal-content textarea, .modal-content select{width:100%;padding:10px;margin-bottom:10px;border-radius:6px;border:1px solid #1e293b;background:#020617;color:white}
+
+.bio-modal{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.7);
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+}
+
+.bio-box{
+    background:#020617;
+    padding:20px;
+    border-radius:12px;
+    width:400px;
+    max-width:90%;
+    box-shadow:0 0 20px rgba(56,189,248,0.3);
+    animation:fadeIn 0.2s ease;
+}
+
+.bio-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:18px;
+    font-weight:bold;
+    color:#38bdf8;
+    margin-bottom:10px;
+}
+
+.bio-close{cursor:pointer;color:#ef4444;font-size:20px}
+.bio-close:hover{color:#dc2626}
+.bio-content{color:#cbd5e1;line-height:1.5;white-space:pre-line}
+
+@keyframes fadeIn{
+    from{opacity:0;transform:scale(0.9)}
+    to{opacity:1;transform:scale(1)}
+}
+
+/* Toolbar */
+.toolbar{
+    display:flex;
+    gap:8px;
+    align-items:center;
+    flex-wrap:wrap;
+    margin-bottom:16px;
+}
+
+.empty-state{
+    text-align:center;
+    padding:60px 20px;
+    color:#64748b;
+}
+
+.empty-state i{
+    font-size:48px;
+    margin-bottom:16px;
+    opacity:0.5;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="sidebar">
+<h2>🚀 Airdrop Tracker</h2>
+
+<a onclick="setView('all')" id="menu-all" class="active">📊 All Airdrops</a>
+<a onclick="setView('done')" id="menu-done">✔ Completed Daily</a>
+<a onclick="setView('notdone')" id="menu-notdone">✖ Not Completed Daily</a>
+<a onclick="setView('finished')" id="menu-finished">🏁 Finished Projects</a>
+<a onclick="setView('stats')" id="menu-stats">📈 Statistics</a>
+
+<hr style="border:none;border-top:1px solid #1e293b;margin:16px 0">
+
+<a onclick="setView('defi')" id="menu-defi">🔮 DeFi</a>
+<a onclick="setView('gaming')" id="menu-gaming">🎮 Gaming</a>
+<a onclick="setView('nft')" id="menu-nft">🖼️ NFT</a>
+<a onclick="setView('social')" id="menu-social">💬 Social</a>
+
+<hr style="border:none;border-top:1px solid #1e293b;margin:16px 0">
+
+<div style="padding:10px 0">
+<button class="button" style="width:100%;margin-bottom:8px" onclick="exportData()">📥 Export Data</button>
+<button class="button button-secondary" style="width:100%" onclick="document.getElementById('importFile').click()">📤 Import Data</button>
+<input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+</div>
+
+</div>
+
+<div class="main">
+
+<div class="header">
+<h1 id="title">All Airdrops</h1>
+
+<div style="display:flex;gap:8px">
+<button class="button" onclick="requestNotificationPermission()">🔔 Enable Notifications</button>
+<button class="button" onclick="startDaily()">▶️ Start Daily</button>
+<button class="button" onclick="openModal()">➕ Add Airdrop</button>
+</div>
+</div>
+
+<!-- Search Bar -->
+<div class="search-bar">
+<i data-lucide="search"></i>
+<input type="text" id="searchInput" placeholder="Search project, wallet, stage..." onkeyup="handleSearch()">
+</div>
+
+<!-- Statistics View -->
+<div id="statsView" style="display:none">
+<div class="stats-container">
+<div class="stat-card">
+<h3>Total Airdrops</h3>
+<div class="value" id="statTotal">0</div>
+</div>
+<div class="stat-card">
+<h3>Active Projects</h3>
+<div class="value" id="statActive">0</div>
+</div>
+<div class="stat-card">
+<h3>Completed Today</h3>
+<div class="value" id="statCompleted">0</div>
+</div>
+<div class="stat-card">
+<h3>Total Rewards</h3>
+<div class="value" style="color:#facc15" id="statRewards">$0</div>
+</div>
+</div>
+
+<div class="chart-container">
+<h3 style="margin-bottom:16px;color:#38bdf8">Category Distribution</h3>
+<canvas id="categoryChart" style="max-height:300px"></canvas>
+</div>
+
+<div class="chart-container">
+<h3 style="margin-bottom:16px;color:#38bdf8">Completion Rate</h3>
+<canvas id="completionChart" style="max-height:300px"></canvas>
+</div>
+</div>
+
+<div class="grid" id="grid"></div>
+
+</div>
+
+</div>
+
+<!-- Modal Add Airdrop -->
+<div class="modal" id="modal">
+<div class="modal-content">
+
+<h3 style="margin-bottom:15px;color:#38bdf8">Add / Edit Airdrop</h3>
+
+<input id="project" placeholder="Project Name">
+<input id="image" placeholder="Image URL">
+<input id="link" placeholder="Project Link">
+
+<textarea id="bioInput" placeholder="Project Bio / Description" rows="3"></textarea>
+
+<select id="category">
+<option value="">Select Category</option>
+<option value="defi">🔮 DeFi</option>
+<option value="gaming">🎮 Gaming</option>
+<option value="nft">🖼️ NFT</option>
+<option value="social">💬 Social</option>
+<option value="other">📦 Other</option>
+</select>
+
+<input id="twitter" placeholder="Twitter Link">
+<input id="discord" placeholder="Discord Link">
+<input id="wallet" placeholder="Wallet Address">
+<input id="reward" placeholder="Reward Amount (numbers only)">
+<input id="stage" placeholder="Stage (e.g., Mainnet, Testnet)">
+<input id="task" placeholder="Task Type (e.g., Daily, Weekly)">
+<input id="joinDate" type="date">
+
+<div style="display:flex;gap:8px;margin-top:12px">
+<button class="button" onclick="saveAirdrop()" style="flex:1">💾 Save</button>
+<button class="button button-secondary" onclick="closeModal()" style="flex:1">✕ Close</button>
+</div>
+
+</div>
+</div>
+
+<!-- Bio Modal -->
+<div id="bioModal" class="bio-modal">
+<div class="bio-box">
+<div class="bio-header">
+<span id="bioProjectName"></span>
+<span class="bio-close" onclick="closeBio()">✕</span>
+</div>
+<div id="bioContent" class="bio-content"></div>
+</div>
+</div>
+
+<script>
+
+let data=JSON.parse(localStorage.getItem("airdrops")||"[]")
+let editIndex=null
+let currentView="all"
+let searchQuery=""
+let notificationInterval=null
+let draggedIndex=null
+
+// Drag and Drop Handlers
+function handleDragStart(e){
+    draggedIndex=parseInt(e.target.dataset.index)
+    e.target.classList.add('dragging')
+    e.dataTransfer.effectAllowed='move'
+}
+
+function handleDragOver(e){
+    if(e.preventDefault) e.preventDefault()
+    e.dataTransfer.dropEffect='move'
+    return false
+}
+
+function handleDragEnter(e){
+    if(e.target.classList.contains('card')){
+        e.target.classList.add('drag-over')
+    }
+}
+
+function handleDragLeave(e){
+    if(e.target.classList.contains('card')){
+        e.target.classList.remove('drag-over')
+    }
+}
+
+function handleDrop(e){
+    if(e.stopPropagation) e.stopPropagation()
+    e.preventDefault()
+    
+    const dropIndex=parseInt(e.target.closest('.card').dataset.index)
+    
+    if(draggedIndex!==dropIndex && draggedIndex!==null){
+        // Reorder array
+        const draggedItem=data[draggedIndex]
+        data.splice(draggedIndex,1)
+        
+        // Find new position after removal
+        const newDropIndex=draggedIndex<dropIndex?dropIndex-1:dropIndex
+        data.splice(newDropIndex,0,draggedItem)
+        
+        save()
+        render()
+        showNotification("Reordered! 🔄","Airdrop position updated","success")
+    }
+    
+    return false
+}
+
+function handleDragEnd(e){
+    e.target.classList.remove('dragging')
+    document.querySelectorAll('.card').forEach(card=>{
+        card.classList.remove('drag-over')
+    })
+    draggedIndex=null
+}
+
+function save(){localStorage.setItem("airdrops",JSON.stringify(data))}
+function now(){return new Date().toLocaleString()}
+
+// Notification System
+function requestNotificationPermission(){
+    if("Notification" in window){
+        Notification.requestPermission().then(permission=>{
+            if(permission==="granted"){
+                showNotification("Notifications Enabled! ✅","You'll receive daily task reminders","success")
+                startNotificationCheck()
+            }else{
+                showNotification("Permission Denied","Enable notifications in browser settings","error")
+            }
+        })
+    }else{
+        showNotification("Not Supported","Your browser doesn't support notifications","error")
+    }
+}
+
+function startNotificationCheck(){
+    if(notificationInterval) clearInterval(notificationInterval)
+    
+    notificationInterval=setInterval(()=>{
+        const incomplete=data.filter(a=>!a.done && !a.finished).length
+        if(incomplete>0 && Notification.permission==="granted"){
+            new Notification("Airdrop Reminder 🔔",{
+                body:`You have ${incomplete} incomplete daily tasks!`,
+                icon:"https://img.icons8.com/fluency/96/rocket.png"
+            })
+        }
+    },3600000) // Check every hour
+}
+
+function showNotification(title,message,type="success"){
+    const notif=document.createElement("div")
+    notif.className=`notification ${type}`
+    notif.innerHTML=`
+        <div style="font-weight:700;margin-bottom:4px">${title}</div>
+        <div style="font-size:14px;color:#94a3b8">${message}</div>
+    `
+    document.body.appendChild(notif)
+    setTimeout(()=>notif.remove(),3000)
+}
+
+// Search Function
+function handleSearch(){
+    searchQuery=document.getElementById("searchInput").value.toLowerCase()
+    render()
+}
+
+function setView(view){
+    currentView=view
+    
+    document.querySelectorAll(".sidebar a").forEach(a=>a.classList.remove("active"))
+    document.getElementById("menu-"+view).classList.add("active")
+    
+    const titles={
+        all:"All Airdrops",
+        done:"✔ Completed Daily",
+        notdone:"✖ Not Completed Daily",
+        finished:"🏁 Finished Projects",
+        stats:"📈 Statistics Dashboard",
+        defi:"🔮 DeFi Category",
+        gaming:"🎮 Gaming Category",
+        nft:"🖼️ NFT Category",
+        social:"💬 Social Category"
+    }
+    
+    document.getElementById("title").innerText=titles[view]||"All Airdrops"
+    render()
+}
+
+function render(){
+    checkDailyReset()
+    
+    grid.innerHTML=""
+    document.getElementById("statsView").style.display="none"
+    
+    let filtered=data
+    
+    // Category filters
+    if(currentView==='defi') filtered=data.filter(a=>a.category==='defi')
+    if(currentView==='gaming') filtered=data.filter(a=>a.category==='gaming')
+    if(currentView==='nft') filtered=data.filter(a=>a.category==='nft')
+    if(currentView==='social') filtered=data.filter(a=>a.category==='social')
+    
+    // Status filters
+    if(currentView==='done') filtered=data.filter(a=>a.done && !a.finished)
+    if(currentView==='notdone') filtered=data.filter(a=>!a.done && !a.finished)
+    if(currentView==='finished') filtered=data.filter(a=>a.finished)
+    
+    // Search filter
+    if(searchQuery){
+        filtered=filtered.filter(a=>
+            a.project.toLowerCase().includes(searchQuery)||
+            a.wallet.toLowerCase().includes(searchQuery)||
+            a.stage.toLowerCase().includes(searchQuery)||
+            (a.category||"").toLowerCase().includes(searchQuery)
+        )
+    }
+    
+    // Statistics View
+    if(currentView==='stats'){
+        renderStatistics()
+        return
+    }
+    
+    // Empty state
+    if(filtered.length===0){
+        grid.innerHTML=`
+            <div class="empty-state">
+                <i data-lucide="inbox"></i>
+                <h3>No airdrops found</h3>
+                <p>Try adjusting your filters or add a new airdrop</p>
+            </div>
+        `
+        setTimeout(()=>lucide.createIcons(),100)
+        return
+    }
+    
+    filtered.forEach((a,i)=>{
+        const realIndex=data.indexOf(a)
+        const status=a.done?"✔":"✖"
+        const statusClass=a.done?"status-check":"status-x"
+        const finishedBadge=a.finished?
+            "<span class='badge finished'>FINISHED</span>":
+            "<span class='badge active-badge'>ACTIVE</span>"
+        
+        const categoryTag=a.category?
+            `<span class='tag tag-${a.category}'>${getCategoryIcon(a.category)} ${a.category.toUpperCase()}</span>`:
+            ""
+        
+        const card=document.createElement("div")
+        card.className="card"
+        card.draggable=true
+        card.dataset.index=realIndex
+        
+        // Drag event handlers
+        card.addEventListener('dragstart',handleDragStart)
+        card.addEventListener('dragover',handleDragOver)
+        card.addEventListener('drop',handleDrop)
+        card.addEventListener('dragend',handleDragEnd)
+        card.addEventListener('dragenter',handleDragEnter)
+        card.addEventListener('dragleave',handleDragLeave)
+        
+        card.innerHTML=`
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <i data-lucide="grip-vertical" style="color:#64748b;cursor:move" title="Drag to reorder"></i>
+            <div style="flex:1">
+                <div class="project" style="margin-bottom:0">
+                    <img src="${a.image}" alt="${a.project}" onerror="this.src='https://via.placeholder.com/36'">
+                    <div>
+                        <div onclick="openBio(${realIndex})" style="cursor:pointer;color:#38bdf8;font-weight:bold;">
+                            ${a.project}
+                        </div>
+                        <div class="wallet">${a.wallet}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="badge-row">
+            ${categoryTag}
+            <span class="badge mainnet">${a.stage}</span>
+            <span class="badge daily">${a.task}</span>
+            ${finishedBadge}
+        </div>
+        
+        <div class="info-row">
+            <div class="info-item">
+                <span class="info-label">Join Date</span>
+                <span class="info-value">${a.joinDate || "-"}</span>
+            </div>
+            
+            <div class="info-item">
+                <span class="info-label">Last Activity</span>
+                <span class="info-value">${a.lastActivity || "-"}</span>
+            </div>
+            
+            <div class="info-item">
+                <span class="info-label">Status</span>
+                <span class="${statusClass}">${status}</span>
+            </div>
+            
+            <div class="info-item">
+                <span class="info-label">Reward</span>
+                <span class="reward">
+                    ${a.finished ? (a.reward ? `$${a.reward}` : "-") : "-"}
+                </span>
+            </div>
+        </div>
+        
+        <div class="actions-row">
+            <div class="icon-left">
+                <button class="icon-btn" title="Open Project" onclick="openLink(${realIndex},'project')">
+                    <i data-lucide="external-link"></i>
+                </button>
+                
+                <button class="icon-btn" title="Open Twitter" onclick="openLink(${realIndex},'twitter')">
+                    <i data-lucide="twitter"></i>
+                </button>
+                
+                <button class="icon-btn" title="Open Discord" onclick="openLink(${realIndex},'discord')">
+                    <i data-lucide="message-circle"></i>
+                </button>
+            </div>
+            
+            <div class="icon-right">
+                <button class="icon-btn" title="Mark as Finished" onclick="markFinished(${realIndex})">
+                    <i data-lucide="flag"></i>
+                </button>
+                
+                <button class="icon-btn" title="Edit Airdrop" onclick="editAirdrop(${realIndex})">
+                    <i data-lucide="pencil"></i>
+                </button>
+                
+                <button class="icon-btn" title="Delete Airdrop" onclick="deleteAirdrop(${realIndex})">
+                    <i data-lucide="trash-2"></i>
+                </button>
+            </div>
+        </div>
+        `
+        
+        grid.appendChild(card)
+    })
+    
+    // Render icons after all cards are added
+    setTimeout(()=>lucide.createIcons(),100)
+}
+
+function getCategoryIcon(category){
+    const icons={defi:"🔮",gaming:"🎮",nft:"🖼️",social:"💬",other:"📦"}
+    return icons[category]||"📦"
+}
+
+function renderStatistics(){
+    document.getElementById("statsView").style.display="block"
+    
+    const total=data.length
+    const active=data.filter(a=>!a.finished).length
+    const completed=data.filter(a=>a.done && !a.finished).length
+    const finished=data.filter(a=>a.finished)
+    const totalRewards=finished.reduce((sum,a)=>sum+(parseFloat(a.reward)||0),0)
+    
+    document.getElementById("statTotal").innerText=total
+    document.getElementById("statActive").innerText=active
+    document.getElementById("statCompleted").innerText=completed
+    document.getElementById("statRewards").innerText=`$${totalRewards.toFixed(2)}`
+    
+    // Category Distribution Chart
+    const categories={defi:0,gaming:0,nft:0,social:0,other:0}
+    data.forEach(a=>{
+        const cat=a.category||"other"
+        categories[cat]++
+    })
+    
+    const ctx1=document.getElementById("categoryChart")
+    if(window.categoryChartInstance) window.categoryChartInstance.destroy()
+    
+    window.categoryChartInstance=new Chart(ctx1,{
+        type:'doughnut',
+        data:{
+            labels:['DeFi','Gaming','NFT','Social','Other'],
+            datasets:[{
+                data:[categories.defi,categories.gaming,categories.nft,categories.social,categories.other],
+                backgroundColor:['#8b5cf6','#ec4899','#f59e0b','#06b6d4','#6366f1']
+            }]
+        },
+        options:{
+            responsive:true,
+            plugins:{legend:{labels:{color:'#e2e8f0'}}}
+        }
+    })
+    
+    // Completion Rate Chart
+    const ctx2=document.getElementById("completionChart")
+    if(window.completionChartInstance) window.completionChartInstance.destroy()
+    
+    window.completionChartInstance=new Chart(ctx2,{
+        type:'bar',
+        data:{
+            labels:['Active','Completed Today','Not Done','Finished'],
+            datasets:[{
+                label:'Count',
+                data:[
+                    active,
+                    completed,
+                    data.filter(a=>!a.done && !a.finished).length,
+                    finished.length
+                ],
+                backgroundColor:['#3b82f6','#22c55e','#ef4444','#facc15']
+            }]
+        },
+        options:{
+            responsive:true,
+            plugins:{legend:{display:false}},
+            scales:{
+                y:{beginAtZero:true,ticks:{color:'#94a3b8'}},
+                x:{ticks:{color:'#94a3b8'}}
+            }
+        }
+    })
+}
+
+// Export/Import Functions
+function exportData(){
+    const dataStr=JSON.stringify(data,null,2)
+    const blob=new Blob([dataStr],{type:'application/json'})
+    const url=URL.createObjectURL(blob)
+    const a=document.createElement('a')
+    a.href=url
+    a.download=`airdrop-tracker-${new Date().toISOString().split('T')[0]}.json`
+    a.click()
+    showNotification("Export Success! 📥",`Exported ${data.length} airdrops`,"success")
+}
+
+function importData(event){
+    const file=event.target.files[0]
+    if(!file) return
+    
+    const reader=new FileReader()
+    reader.onload=function(e){
+        try{
+            const imported=JSON.parse(e.target.result)
+            if(Array.isArray(imported)){
+                data=imported
+                save()
+                render()
+                showNotification("Import Success! 📤",`Imported ${imported.length} airdrops`,"success")
+            }else{
+                showNotification("Import Failed","Invalid JSON format","error")
+            }
+        }catch(err){
+            showNotification("Import Failed",err.message,"error")
+        }
+    }
+    reader.readAsText(file)
+}
+
+function markFinished(i){
+    data[i].finished=true
+    save()
+    render()
+    showNotification("Project Finished! 🏁",data[i].project,"success")
+}
+
+function openLink(i,type){
+    let url=""
+    if(type==='project'){
+        url=data[i].link
+        data[i].done=true
+        data[i].lastActivity=now()
+        save()
+        render()
+    }
+    if(type==='twitter'){url=data[i].twitter;data[i].lastActivity=now();save()}
+    if(type==='discord'){url=data[i].discord;data[i].lastActivity=now();save()}
+    if(url) window.open(url)
+}
+
+function deleteAirdrop(i){
+    if(confirm(`Delete ${data[i].project}?`)){
+        data.splice(i,1)
+        save()
+        render()
+        showNotification("Deleted","Airdrop removed","success")
+    }
+}
+
+function editAirdrop(i){
+    editIndex=i
+    const a=data[i]
+    document.getElementById("project").value=a.project
+    document.getElementById("image").value=a.image
+    document.getElementById("link").value=a.link
+    document.getElementById("bioInput").value=a.bio||""
+    document.getElementById("category").value=a.category||""
+    document.getElementById("twitter").value=a.twitter
+    document.getElementById("discord").value=a.discord
+    document.getElementById("wallet").value=a.wallet
+    document.getElementById("reward").value=a.reward
+    document.getElementById("stage").value=a.stage
+    document.getElementById("task").value=a.task
+    document.getElementById("joinDate").value=a.joinDate
+    openModal()
+}
+
+function openModal(){document.getElementById("modal").style.display="flex"}
+function closeModal(){
+    document.getElementById("modal").style.display="none"
+    editIndex=null
+    document.querySelectorAll('.modal-content input, .modal-content textarea, .modal-content select').forEach(el=>el.value='')
+}
+
+function saveAirdrop(){
+    const obj={
+        project:document.getElementById("project").value,
+        image:document.getElementById("image").value,
+        link:document.getElementById("link").value,
+        bio:document.getElementById("bioInput").value,
+        category:document.getElementById("category").value,
+        twitter:document.getElementById("twitter").value,
+        discord:document.getElementById("discord").value,
+        wallet:document.getElementById("wallet").value,
+        reward:document.getElementById("reward").value,
+        stage:document.getElementById("stage").value,
+        task:document.getElementById("task").value,
+        joinDate:document.getElementById("joinDate").value,
+        done:false,
+        finished:false,
+        lastActivity:"-"
+    }
+    
+    if(editIndex!=null){
+        obj.done=data[editIndex].done
+        obj.finished=data[editIndex].finished
+        obj.lastActivity=data[editIndex].lastActivity
+        data[editIndex]=obj
+        showNotification("Updated! ✏️",obj.project,"success")
+    }else{
+        data.push(obj)
+        showNotification("Added! ✅",obj.project,"success")
+    }
+    
+    save()
+    render()
+    closeModal()
+}
+
+function startDaily(){
+    data.forEach(a=>{if(!a.finished)a.done=false})
+    localStorage.setItem("lastReset",new Date().toDateString())
+    save()
+    render()
+    showNotification("Daily Reset! 🔄","All tasks reset to incomplete","success")
+}
+
+function checkDailyReset(){
+    const last=localStorage.getItem("lastReset")
+    const today=new Date().toDateString()
+    if(last!=today){
+        data.forEach(a=>{if(!a.finished)a.done=false})
+        localStorage.setItem("lastReset",today)
+        save()
+    }
+}
+
+function openBio(i){
+    const a=data[i]
+    document.getElementById("bioProjectName").innerText=a.project
+    document.getElementById("bioContent").innerText=a.bio||"No bio available"
+    document.getElementById("bioModal").style.display="flex"
+}
+
+document.getElementById("bioModal").addEventListener("click",function(e){
+    if(e.target===this) closeBio()
+})
+
+function closeBio(){
+    document.getElementById("bioModal").style.display="none"
+}
+
+// Initialize
+setTimeout(()=>lucide.createIcons(),100)
+render()
+
+// Auto-check notifications every hour if permission granted
+if(Notification.permission==="granted"){
+    startNotificationCheck()
+}
+
+</script>
+
+</body>
+</html>
