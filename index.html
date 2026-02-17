@@ -157,13 +157,10 @@ body{background:linear-gradient(180deg,#0b1220,#020617);color:#e2e8f0;min-height
 }
 .tag-defi{background:#8b5cf6;color:white}
 .tag-layer1{background:#3b82f6;color:white}
-.tag-layer2{background:#06b6d4;color:white}
-.tag-gaming{background:#ec4899;color:white}
-.tag-nft{background:#f59e0b;color:white}
+.tag-depin{background:#f59e0b;color:white}
 .tag-privacy{background:#6366f1;color:white}
 .tag-ai{background:#10b981;color:white}
 .tag-robotic{background:#14b8a6;color:white}
-.tag-social{background:#06b6d4;color:white}
 .tag-other{background:#64748b;color:white}
 
 .badge-row{
@@ -406,13 +403,10 @@ body{background:linear-gradient(180deg,#0b1220,#020617);color:#e2e8f0;min-height
 <div class="category-list" id="categoryList">
 <a onclick="setView('defi')" id="menu-defi">🔮 DeFi</a>
 <a onclick="setView('layer1')" id="menu-layer1">🔷 Layer-1</a>
-<a onclick="setView('layer2')" id="menu-layer2">⚡ Layer-2</a>
-<a onclick="setView('gaming')" id="menu-gaming">🎮 Gaming</a>
-<a onclick="setView('nft')" id="menu-nft">🖼️ NFT</a>
+<a onclick="setView('depin')" id="menu-depin">📡 DePIN</a>
 <a onclick="setView('privacy')" id="menu-privacy">🔒 Privacy</a>
 <a onclick="setView('ai')" id="menu-ai">🤖 AI</a>
 <a onclick="setView('robotic')" id="menu-robotic">🦾 Robotic</a>
-<a onclick="setView('social')" id="menu-social">💬 Social</a>
 </div>
 </div>
 
@@ -508,13 +502,10 @@ body{background:linear-gradient(180deg,#0b1220,#020617);color:#e2e8f0;min-height
 <option value="">Select Category</option>
 <option value="defi">🔮 DeFi</option>
 <option value="layer1">🔷 Layer-1</option>
-<option value="layer2">⚡ Layer-2</option>
-<option value="gaming">🎮 Gaming</option>
-<option value="nft">🖼️ NFT</option>
+<option value="depin">📡 DePIN</option>
 <option value="privacy">🔒 Privacy</option>
 <option value="ai">🤖 AI</option>
 <option value="robotic">🦾 Robotic</option>
-<option value="social">💬 Social</option>
 <option value="other">📦 Other</option>
 </select>
 
@@ -712,13 +703,10 @@ function setView(view){
         stats:"📈 Statistics Dashboard",
         defi:"🔮 DeFi Category",
         layer1:"🔷 Layer-1 Category",
-        layer2:"⚡ Layer-2 Category",
-        gaming:"🎮 Gaming Category",
-        nft:"🖼️ NFT Category",
+        depin:"📡 DePIN Category",
         privacy:"🔒 Privacy Category",
         ai:"🤖 AI Category",
-        robotic:"🦾 Robotic Category",
-        social:"💬 Social Category"
+        robotic:"🦾 Robotic Category"
     }
     
     document.getElementById("title").innerText=titles[view]||"All Airdrops"
@@ -736,13 +724,10 @@ function render(){
     // Category filters
     if(currentView==='defi') filtered=data.filter(a=>a.category==='defi')
     if(currentView==='layer1') filtered=data.filter(a=>a.category==='layer1')
-    if(currentView==='layer2') filtered=data.filter(a=>a.category==='layer2')
-    if(currentView==='gaming') filtered=data.filter(a=>a.category==='gaming')
-    if(currentView==='nft') filtered=data.filter(a=>a.category==='nft')
+    if(currentView==='depin') filtered=data.filter(a=>a.category==='depin')
     if(currentView==='privacy') filtered=data.filter(a=>a.category==='privacy')
     if(currentView==='ai') filtered=data.filter(a=>a.category==='ai')
     if(currentView==='robotic') filtered=data.filter(a=>a.category==='robotic')
-    if(currentView==='social') filtered=data.filter(a=>a.category==='social')
     
     // Status filters
     if(currentView==='done') filtered=data.filter(a=>a.done && !a.finished)
@@ -892,13 +877,10 @@ function getCategoryIcon(category){
     const icons={
         defi:"🔮",
         layer1:"🔷",
-        layer2:"⚡",
-        gaming:"🎮",
-        nft:"🖼️",
+        depin:"📡",
         privacy:"🔒",
         ai:"🤖",
         robotic:"🦾",
-        social:"💬",
         other:"📦"
     }
     return icons[category]||"📦"
@@ -922,13 +904,10 @@ function renderStatistics(){
     const categories={
         defi:0,
         layer1:0,
-        layer2:0,
-        gaming:0,
-        nft:0,
+        depin:0,
         privacy:0,
         ai:0,
         robotic:0,
-        social:0,
         other:0
     }
     data.forEach(a=>{
@@ -942,30 +921,24 @@ function renderStatistics(){
     window.categoryChartInstance=new Chart(ctx1,{
         type:'doughnut',
         data:{
-            labels:['DeFi','Layer-1','Layer-2','Gaming','NFT','Privacy','AI','Robotic','Social','Other'],
+            labels:['DeFi','Layer-1','DePIN','Privacy','AI','Robotic','Other'],
             datasets:[{
                 data:[
                     categories.defi,
                     categories.layer1,
-                    categories.layer2,
-                    categories.gaming,
-                    categories.nft,
+                    categories.depin,
                     categories.privacy,
                     categories.ai,
                     categories.robotic,
-                    categories.social,
                     categories.other
                 ],
                 backgroundColor:[
                     '#8b5cf6', // DeFi
                     '#3b82f6', // Layer-1
-                    '#06b6d4', // Layer-2
-                    '#ec4899', // Gaming
-                    '#f59e0b', // NFT
+                    '#f59e0b', // DePIN
                     '#6366f1', // Privacy
                     '#10b981', // AI
                     '#14b8a6', // Robotic
-                    '#06b6d4', // Social
                     '#64748b'  // Other
                 ]
             }]
