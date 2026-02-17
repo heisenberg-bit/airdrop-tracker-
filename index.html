@@ -4,7 +4,11 @@
 <meta charset="UTF-8">
 <script src="https://unpkg.com/lucide@latest"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<meta name="theme-color" content="#0b1220">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Airdrop Tracker</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -13,6 +17,101 @@
 
 body{background:linear-gradient(180deg,#0b1220,#020617);color:#e2e8f0;min-height:100vh}
 .container{display:flex;min-height:100vh}
+
+/* Responsive Breakpoints */
+@media (max-width: 768px) {
+    .container{
+        flex-direction:column;
+    }
+    
+    .sidebar{
+        width:100%;
+        height:auto;
+        max-height:none;
+        position:relative;
+        border-right:none;
+        border-bottom:1px solid #1e293b;
+    }
+    
+    .sidebar.hidden{
+        transform:translateY(-100%);
+        margin-left:0;
+        margin-top:-100%;
+    }
+    
+    .main{
+        padding:15px;
+    }
+    
+    .header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+    }
+    
+    .header > div{
+        width:100%;
+    }
+    
+    .header > div:last-child{
+        flex-wrap:wrap;
+    }
+    
+    .search-bar{
+        width:100%;
+    }
+    
+    .grid{
+        grid-template-columns:1fr;
+    }
+    
+    .stats-container{
+        grid-template-columns:1fr;
+    }
+    
+    .hamburger-btn span{
+        display:none;
+    }
+    
+    .modal-content{
+        width:90%;
+        max-width:none;
+        padding:15px;
+    }
+    
+    .bio-box{
+        width:90%;
+        padding:15px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .sidebar{
+        width:200px;
+    }
+    
+    .sidebar.hidden{
+        margin-left:-200px;
+    }
+    
+    .main{
+        padding:20px;
+    }
+    
+    .grid{
+        grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    }
+    
+    .stats-container{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media (min-width: 1025px) {
+    .grid{
+        grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
+    }
+}
 
 .sidebar{
     width:240px;
@@ -135,10 +234,38 @@ body{background:linear-gradient(180deg,#0b1220,#020617);color:#e2e8f0;min-height
 
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:16px}
 
-.card{background:#020617;padding:18px;border-radius:12px;border:1px solid #1e293b;transition:0.2s;cursor:move}
+.card{
+    background:#020617;
+    padding:18px;
+    border-radius:12px;
+    border:1px solid #1e293b;
+    transition:0.2s;
+    cursor:move;
+}
 .card:hover{border-color:#2563eb;box-shadow:0 4px 12px rgba(37,99,235,0.1)}
 .card.dragging{opacity:0.5;transform:scale(0.95)}
 .card.drag-over{border-color:#22c55e;border-width:2px;background:#0f172a}
+
+@media (max-width: 768px) {
+    .card{
+        padding:15px;
+        cursor:default;
+    }
+    
+    .card:active{
+        transform:scale(0.98);
+    }
+    
+    .project img{
+        width:32px;
+        height:32px;
+    }
+    
+    .wallet{
+        font-size:11px;
+        word-break:break-all;
+    }
+}
 
 .project{display:flex;gap:10px;align-items:center;margin-bottom:12px}
 .project img{width:36px;height:36px;border-radius:50%;object-fit:cover}
@@ -180,6 +307,23 @@ body{background:linear-gradient(180deg,#0b1220,#020617);color:#e2e8f0;min-height
     border-radius:8px;
 }
 
+@media (max-width: 480px) {
+    .info-row{
+        grid-template-columns:1fr;
+        gap:8px;
+        padding:10px;
+    }
+    
+    .info-item{
+        padding:6px 0;
+        border-bottom:1px solid #1e293b;
+    }
+    
+    .info-item:last-child{
+        border-bottom:none;
+    }
+}
+
 .info-item{
     display:flex;
     flex-direction:column;
@@ -209,9 +353,28 @@ body{background:linear-gradient(180deg,#0b1220,#020617);color:#e2e8f0;min-height
     justify-content:space-between;
     align-items:center;
     gap:8px;
+    flex-wrap:wrap;
 }
 
-.icon-left, .icon-right{display:flex;gap:6px}
+.icon-left, .icon-right{display:flex;gap:6px;flex-wrap:wrap}
+
+@media (max-width: 480px) {
+    .actions-row{
+        flex-direction:column;
+        align-items:stretch;
+    }
+    
+    .icon-left, .icon-right{
+        justify-content:center;
+        width:100%;
+    }
+    
+    .button{
+        width:100%;
+        font-size:13px;
+        padding:8px 12px;
+    }
+}
 
 .icon-btn{
     background:#0f172a;
@@ -225,6 +388,25 @@ body{background:linear-gradient(180deg,#0b1220,#020617);color:#e2e8f0;min-height
     justify-content:center;
     transition:0.2s;
     position:relative;
+    min-width:40px;
+    min-height:40px;
+}
+
+@media (max-width: 768px) {
+    .icon-btn{
+        min-width:44px;
+        min-height:44px;
+        padding:10px;
+    }
+    
+    .button{
+        min-height:44px;
+        touch-action:manipulation;
+    }
+    
+    .hamburger-btn{
+        min-height:44px;
+    }
 }
 
 .icon-btn:hover{background:#1e293b;color:#38bdf8}
