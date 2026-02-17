@@ -8,7 +8,7 @@ Professional airdrop management tool with drag & drop, statistics, and notificat
 - 📊 Statistics Dashboard with charts
 - 🔔 Browser notifications
 - 📥 Export/Import data
-- 🏷️ Categories (DeFi, Gaming, NFT, Social)
+- 🏷️ Categories (DeFi, Layer-1, Privacy, AI, Robotic, DePIN)
 - 🔍 Real-time search & filter
 
 ## 🌐 Live Demo
