@@ -9,7 +9,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Airdrop Tracker</title>
+<title>Airdrop Tracker PRO+ Enhanced</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -617,8 +617,9 @@ body{background:linear-gradient(180deg,#0b1220,#020617);color:#e2e8f0;min-height
 <h1 id="title">All Airdrops</h1>
 </div>
 
-<div style="display:flex;gap:8px">
+<div style="display:flex;gap:8px;flex-wrap:wrap">
 <button class="button" onclick="requestNotificationPermission()">🔔 Enable Notifications</button>
+<button class="button button-secondary" onclick="testNotification()">🧪 Test Notification</button>
 <button class="button" onclick="startDaily()">▶️ Start Daily</button>
 <button class="button" onclick="openModal()">➕ Add Airdrop</button>
 </div>
@@ -829,7 +830,7 @@ function requestNotificationPermission(){
     if("Notification" in window){
         Notification.requestPermission().then(permission=>{
             if(permission==="granted"){
-                showNotification("Notifications Enabled! ✅","You'll receive daily task reminders","success")
+                showNotification("Notifications Enabled! ✅","You'll receive reminders every 2 minutes (testing mode)","success")
                 startNotificationCheck()
             }else{
                 showNotification("Permission Denied","Enable notifications in browser settings","error")
@@ -837,6 +838,24 @@ function requestNotificationPermission(){
         })
     }else{
         showNotification("Not Supported","Your browser doesn't support notifications","error")
+    }
+}
+
+function testNotification(){
+    if(Notification.permission==="granted"){
+        const incomplete=data.filter(a=>!a.done && !a.finished).length
+        new Notification("🔔 Test Notification from Airdrop Tracker",{
+            body: incomplete > 0 
+                ? `You have ${incomplete} incomplete daily tasks!` 
+                : "All daily tasks completed! ✅",
+            icon:"https://img.icons8.com/fluency/96/rocket.png",
+            badge:"https://img.icons8.com/fluency/96/rocket.png"
+        })
+        showNotification("Test Sent! 🧪","Check your notification area","success")
+    }else if(Notification.permission==="denied"){
+        showNotification("Permission Blocked ❌","Unblock notifications in browser settings then refresh","error")
+    }else{
+        showNotification("Permission Not Granted","Click 'Enable Notifications' first","error")
     }
 }
 
@@ -851,7 +870,7 @@ function startNotificationCheck(){
                 icon:"https://img.icons8.com/fluency/96/rocket.png"
             })
         }
-    },3600000) // Check every hour
+    },120000) // Check every 2 minutes (120000ms) for testing
 }
 
 function showNotification(title,message,type="success"){
