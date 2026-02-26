@@ -27,4 +27,4 @@ Professional airdrop management tool with drag & drop, statistics, and notificat
 ![Screenshot](test3.JPG)
 ![Screenshot](test4.JPG)
 ![Screenshot](test5.JPG)
-![Screenshot](Test7.JPG)
+![Screenshot](test7.JPG)
