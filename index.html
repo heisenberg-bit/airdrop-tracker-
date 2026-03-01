@@ -619,7 +619,6 @@ body{background:linear-gradient(180deg,#0b1220,#020617);color:#e2e8f0;min-height
 
 <div style="display:flex;gap:8px;flex-wrap:wrap">
 <button class="button" onclick="requestNotificationPermission()">🔔 Enable Notifications</button>
-<button class="button button-secondary" onclick="testNotification()">🧪 Test Notification</button>
 <button class="button" onclick="startDaily()">▶️ Start Daily</button>
 <button class="button" onclick="openModal()">➕ Add Airdrop</button>
 </div>
@@ -841,41 +840,6 @@ function requestNotificationPermission(){
     }
 }
 
-function testNotification(){
-    console.log("🧪 Test notification triggered")
-    console.log("   Permission:", Notification.permission)
-    
-    if(Notification.permission==="granted"){
-        const incomplete=data.filter(a=>!a.done && !a.finished).length
-        console.log("   Incomplete tasks:", incomplete)
-        
-        try{
-            const notification = new Notification("🔔 Test Notification from Airdrop Tracker",{
-                body: incomplete > 0 
-                    ? `You have ${incomplete} incomplete daily tasks!` 
-                    : "All daily tasks completed! ✅",
-                icon:"https://img.icons8.com/fluency/96/rocket.png",
-                badge:"https://img.icons8.com/fluency/96/rocket.png",
-                tag:"test-notification"
-            })
-            notification.onclick = function(){
-                window.focus()
-                this.close()
-            }
-            console.log("   ✅ Test notification sent!")
-            showNotification("Test Sent! 🧪","Check your notification area (may take 1-2 seconds)","success")
-        }catch(err){
-            console.error("   ❌ Error sending notification:", err)
-            showNotification("Error! ❌",err.message,"error")
-        }
-    }else if(Notification.permission==="denied"){
-        console.log("   ❌ Permission is denied")
-        showNotification("Permission Blocked ❌","Unblock notifications in browser settings then refresh","error")
-    }else{
-        console.log("   ⚠️ Permission not granted yet")
-        showNotification("Permission Not Granted","Click 'Enable Notifications' first","error")
-    }
-}
 
 function startNotificationCheck(){
     if(notificationInterval) clearInterval(notificationInterval)
@@ -1035,20 +999,29 @@ function render(){
         
         const card=document.createElement("div")
         card.className="card"
-        card.draggable=true
-        card.dataset.index=realIndex
         
-        // Drag event handlers
-        card.addEventListener('dragstart',handleDragStart)
-        card.addEventListener('dragover',handleDragOver)
-        card.addEventListener('drop',handleDrop)
-        card.addEventListener('dragend',handleDragEnd)
-        card.addEventListener('dragenter',handleDragEnter)
-        card.addEventListener('dragleave',handleDragLeave)
+        // Only enable drag in 'all' view (no filters active)
+        const isDragEnabled = currentView === 'all' && !searchQuery
+        
+        if(isDragEnabled){
+            card.draggable=true
+            card.dataset.index=realIndex
+            
+            // Drag event handlers
+            card.addEventListener('dragstart',handleDragStart)
+            card.addEventListener('dragover',handleDragOver)
+            card.addEventListener('drop',handleDrop)
+            card.addEventListener('dragend',handleDragEnd)
+            card.addEventListener('dragenter',handleDragEnter)
+            card.addEventListener('dragleave',handleDragLeave)
+        }else{
+            card.draggable=false
+            card.style.cursor='default'
+        }
         
         card.innerHTML=`
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-            <i data-lucide="grip-vertical" style="color:#64748b;cursor:move" title="Drag to reorder"></i>
+            ${isDragEnabled ? '<i data-lucide="grip-vertical" style="color:#64748b;cursor:move" title="Drag to reorder"></i>' : ''}
             <div style="flex:1">
                 <div class="project" style="margin-bottom:0">
                     <img src="${a.image}" alt="${a.project}" onerror="this.src='https://via.placeholder.com/36'">
