@@ -9,7 +9,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Airdrop Tracker PRO+ Enhanced</title>
+<title>Airdrop Tracker</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -553,6 +553,11 @@ body{background:linear-gradient(180deg,#0b1220,#020617);color:#e2e8f0;min-height
     to{opacity:1;transform:scale(1)}
 }
 
+@keyframes fadeOut{
+    from{opacity:1;transform:translateX(0)}
+    to{opacity:0;transform:translateX(400px)}
+}
+
 /* Toolbar */
 .toolbar{
     display:flex;
@@ -843,7 +848,7 @@ function requestNotificationPermission(){
     if("Notification" in window){
         Notification.requestPermission().then(permission=>{
             if(permission==="granted"){
-                showNotification("Notifications Enabled! ✅","You'll receive reminders every 30 minutes","success")
+                showNotification("Notifications Enabled! ✅","You'll receive reminders every 15 minutes","success")
                 startNotificationCheck()
             }else{
                 showNotification("Permission Denied","Enable notifications in browser settings","error")
@@ -858,7 +863,7 @@ function requestNotificationPermission(){
 function startNotificationCheck(){
     if(notificationInterval) clearInterval(notificationInterval)
     
-    console.log("🔔 Notification check started - will check every 30 minutes")
+    console.log("🔔 Notification check started - will check every 15 minutes")
     console.log("Current permission:", Notification.permission)
     
     notificationInterval=setInterval(()=>{
@@ -893,7 +898,7 @@ function startNotificationCheck(){
                 console.log("   ❌ Permission not granted - notification skipped")
             }
         }
-    },1800000) // Check every 30 minutes (1800000ms)
+    },900000) // Check every 15 minutes (900000ms)
     
     // Also send immediate notification for testing
     setTimeout(()=>{
@@ -901,7 +906,7 @@ function startNotificationCheck(){
         if(incomplete>0 && Notification.permission==="granted"){
             console.log("🧪 Sending immediate test notification...")
             new Notification("Airdrop Tracker Started! 🚀",{
-                body:`Tracking ${incomplete} incomplete tasks. You'll get reminders every 30 minutes.`,
+                body:`Tracking ${incomplete} incomplete tasks. You'll get reminders every 15 minutes.`,
                 icon:"https://img.icons8.com/fluency/96/rocket.png"
             })
         }
@@ -1096,6 +1101,12 @@ function render(){
             </div>
             
             <div class="icon-right">
+                ${a.done && !a.finished ? `
+                <button class="icon-btn" title="Undo - Mark as Incomplete" onclick="undoTask(${realIndex})">
+                    <i data-lucide="undo-2"></i>
+                </button>
+                ` : ''}
+                
                 <button class="icon-btn" title="Mark as Finished" onclick="markFinished(${realIndex})">
                     <i data-lucide="flag"></i>
                 </button>
@@ -1114,8 +1125,22 @@ function render(){
         grid.appendChild(card)
     })
     
-    // Render icons after all cards are added
-    setTimeout(()=>lucide.createIcons(),100)
+    // Render icons after all cards are added - multiple attempts to ensure render
+    setTimeout(()=>{
+        if(typeof lucide !== 'undefined'){
+            lucide.createIcons()
+        }
+    },50)
+    setTimeout(()=>{
+        if(typeof lucide !== 'undefined'){
+            lucide.createIcons()
+        }
+    },200)
+    setTimeout(()=>{
+        if(typeof lucide !== 'undefined'){
+            lucide.createIcons()
+        }
+    },500)
 }
 
 function getCategoryIcon(category){
@@ -1269,15 +1294,71 @@ function markFinished(i){
 function openLink(i,type){
     let url=""
     if(type==='project'){
+        // Save previous state for undo
+        const previousState={
+            index:i,
+            done:data[i].done,
+            lastActivity:data[i].lastActivity
+        }
+        
         url=data[i].link
         data[i].done=true
         data[i].lastActivity=now()
         save()
         render()
+        
+        // Show undo notification
+        showUndoNotification(previousState)
     }
     if(type==='twitter'){url=data[i].twitter;data[i].lastActivity=now();save()}
     if(type==='discord'){url=data[i].discord;data[i].lastActivity=now();save()}
     if(url) window.open(url)
+}
+
+function showUndoNotification(previousState){
+    // Create undo notification
+    const undoNotif=document.createElement("div")
+    undoNotif.className="notification success"
+    undoNotif.style.display="flex"
+    undoNotif.style.justifyContent="space-between"
+    undoNotif.style.alignItems="center"
+    undoNotif.style.gap="12px"
+    undoNotif.innerHTML=`
+        <div>
+            <div style="font-weight:700;margin-bottom:4px">Task Completed ✅</div>
+            <div style="font-size:14px;color:#94a3b8">${data[previousState.index].project}</div>
+        </div>
+        <button onclick="undoTaskCompletion(${previousState.index}, ${previousState.done}, '${previousState.lastActivity}')" 
+                style="background:#e2e8f0;color:#020617;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-weight:600;white-space:nowrap">
+            ↶ Undo
+        </button>
+    `
+    document.body.appendChild(undoNotif)
+    
+    // Auto-remove after 8 seconds
+    setTimeout(()=>{
+        undoNotif.style.animation="fadeOut 0.3s ease"
+        setTimeout(()=>undoNotif.remove(),300)
+    },8000)
+}
+
+function undoTaskCompletion(index, previousDone, previousActivity){
+    data[index].done=previousDone
+    data[index].lastActivity=previousActivity
+    save()
+    render()
+    
+    // Remove all undo notifications
+    document.querySelectorAll('.notification').forEach(n=>n.remove())
+    
+    showNotification("Undone! ↶",`${data[index].project} marked as incomplete`,"success")
+}
+
+function undoTask(index){
+    data[index].done=false
+    save()
+    render()
+    showNotification("Undone! ↶",`${data[index].project} marked as incomplete`,"success")
 }
 
 function deleteAirdrop(i){
@@ -1383,7 +1464,15 @@ function closeBio(){
 }
 
 // Initialize
-setTimeout(()=>lucide.createIcons(),100)
+setTimeout(()=>{
+    if(typeof lucide !== 'undefined') lucide.createIcons()
+},100)
+setTimeout(()=>{
+    if(typeof lucide !== 'undefined') lucide.createIcons()
+},300)
+setTimeout(()=>{
+    if(typeof lucide !== 'undefined') lucide.createIcons()
+},600)
 render()
 
 // Set initial sidebar state
