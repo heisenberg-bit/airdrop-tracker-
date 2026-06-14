@@ -585,38 +585,38 @@ body{background:linear-gradient(180deg,#0b1220,#020617);color:#e2e8f0;min-height
 <div class="container">
 
 <div class="sidebar">
-<h2>ðŸš€ Airdrop Tracker</h2>
+<h2>&#x1F680; Airdrop Tracker</h2>
 
-<a onclick="setView('all')" id="menu-all" class="active">ðŸ“Š All Airdrops</a>
-<a onclick="setView('done')" id="menu-done">âœ” Completed Daily</a>
-<a onclick="setView('notdone')" id="menu-notdone">âœ– Not Completed Daily</a>
-<a onclick="setView('finished')" id="menu-finished">ðŸ Finished Projects</a>
-<a onclick="setView('stats')" id="menu-stats">ðŸ“ˆ Statistics</a>
-<a onclick="setView('profile')" id="menu-profile">ðŸ‘¤ My Profile</a>
+<a onclick="setView('all')" id="menu-all" class="active">&#x1F4CA; All Airdrops</a>
+<a onclick="setView('done')" id="menu-done">&#x2714; Completed Daily</a>
+<a onclick="setView('notdone')" id="menu-notdone">&#x2716; Not Completed Daily</a>
+<a onclick="setView('finished')" id="menu-finished">&#x1F3C1; Finished Projects</a>
+<a onclick="setView('stats')" id="menu-stats">&#x1F4C8; Statistics</a>
+<a onclick="setView('profile')" id="menu-profile">&#x1F464; My Profile</a>
 
 <hr style="border:none;border-top:1px solid #1e293b;margin:16px 0">
 
 <div class="category-section">
 <div class="category-toggle" onclick="toggleCategories()">
-<span>ðŸ“ Categories</span>
+<span>&#x1F4C1; Categories</span>
 <i data-lucide="chevron-down"></i>
 </div>
 
 <div class="category-list" id="categoryList">
-<a onclick="setView('defi')" id="menu-defi">ðŸ”® DeFi</a>
-<a onclick="setView('layer1')" id="menu-layer1">ðŸ”· Layer-1</a>
-<a onclick="setView('depin')" id="menu-depin">ðŸ“¡ DePIN</a>
-<a onclick="setView('privacy')" id="menu-privacy">ðŸ”’ Privacy</a>
-<a onclick="setView('ai')" id="menu-ai">ðŸ¤– AI</a>
-<a onclick="setView('robotic')" id="menu-robotic">ðŸ¦¾ Robotic</a>
+<a onclick="setView('defi')" id="menu-defi">&#x1F52E; DeFi</a>
+<a onclick="setView('layer1')" id="menu-layer1">&#x1F537; Layer-1</a>
+<a onclick="setView('depin')" id="menu-depin">&#x1F4E1; DePIN</a>
+<a onclick="setView('privacy')" id="menu-privacy">&#x1F512; Privacy</a>
+<a onclick="setView('ai')" id="menu-ai">&#x1F916; AI</a>
+<a onclick="setView('robotic')" id="menu-robotic">&#x1F9BE; Robotic</a>
 </div>
 </div>
 
 <hr style="border:none;border-top:1px solid #1e293b;margin:16px 0">
 
 <div style="padding:10px 0">
-<button class="button" style="width:100%;margin-bottom:8px" onclick="exportData()">ðŸ“¥ Export Data</button>
-<button class="button button-secondary" style="width:100%" onclick="document.getElementById('importFile').click()">ðŸ“¤ Import Data</button>
+<button class="button" style="width:100%;margin-bottom:8px" onclick="exportData()">&#x1F4E5; Export Data</button>
+<button class="button button-secondary" style="width:100%" onclick="document.getElementById('importFile').click()">&#x1F4E4; Import Data</button>
 <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
 </div>
 
@@ -751,7 +751,7 @@ body{background:linear-gradient(180deg,#0b1220,#020617);color:#e2e8f0;min-height
 
     <!-- Finished Projects -->
     <div style="background:#020617;border:1px solid #1e293b;border-radius:12px;padding:20px;margin-bottom:20px">
-        <h3 style="color:#38bdf8;font-size:15px;margin-bottom:16px">ðŸ Finished Projects & Rewards</h3>
+        <h3 style="color:#38bdf8;font-size:15px;margin-bottom:16px">&#x1F3C1; Finished Projects & Rewards</h3>
         <div id="profileFinished"></div>
     </div>
 
@@ -777,12 +777,12 @@ body{background:linear-gradient(180deg,#0b1220,#020617);color:#e2e8f0;min-height
 
 <select id="category">
 <option value="">Select Category</option>
-<option value="defi">ðŸ”® DeFi</option>
-<option value="layer1">ðŸ”· Layer-1</option>
-<option value="depin">ðŸ“¡ DePIN</option>
-<option value="privacy">ðŸ”’ Privacy</option>
-<option value="ai">ðŸ¤– AI</option>
-<option value="robotic">ðŸ¦¾ Robotic</option>
+<option value="defi">&#x1F52E; DeFi</option>
+<option value="layer1">&#x1F537; Layer-1</option>
+<option value="depin">&#x1F4E1; DePIN</option>
+<option value="privacy">&#x1F512; Privacy</option>
+<option value="ai">&#x1F916; AI</option>
+<option value="robotic">&#x1F9BE; Robotic</option>
 <option value="other">ðŸ“¦ Other</option>
 </select>
 
@@ -1016,15 +1016,15 @@ function setView(view){
         all:"All Airdrops",
         done:"âœ” Completed Daily",
         notdone:"âœ– Not Completed Daily",
-        finished:"ðŸ Finished Projects",
-        stats:"ðŸ“ˆ Statistics Dashboard",
-        profile:"ðŸ‘¤ My Profile",
-        defi:"ðŸ”® DeFi Category",
-        layer1:"ðŸ”· Layer-1 Category",
-        depin:"ðŸ“¡ DePIN Category",
-        privacy:"ðŸ”’ Privacy Category",
-        ai:"ðŸ¤– AI Category",
-        robotic:"ðŸ¦¾ Robotic Category"
+        finished:"&#x1F3C1; Finished Projects",
+        stats:"&#x1F4C8; Statistics Dashboard",
+        profile:"&#x1F464; My Profile",
+        defi:"&#x1F52E; DeFi Category",
+        layer1:"&#x1F537; Layer-1 Category",
+        depin:"&#x1F4E1; DePIN Category",
+        privacy:"&#x1F512; Privacy Category",
+        ai:"&#x1F916; AI Category",
+        robotic:"&#x1F9BE; Robotic Category"
     }
     
     document.getElementById("title").innerText=titles[view]||"All Airdrops"
