@@ -585,38 +585,44 @@ body{background:linear-gradient(180deg,#0b1220,#020617);color:#e2e8f0;min-height
 <div class="container">
 
 <div class="sidebar">
-<h2>&#x1F680; Airdrop Tracker</h2>
+<h2 style="color:#38bdf8;display:flex;align-items:center;gap:8px;margin-bottom:20px">
+    <i data-lucide="rocket"></i> Airdrop Tracker
+</h2>
 
-<a onclick="setView('all')" id="menu-all" class="active">&#x1F4CA; All Airdrops</a>
-<a onclick="setView('done')" id="menu-done">&#x2714; Completed Daily</a>
-<a onclick="setView('notdone')" id="menu-notdone">&#x2716; Not Completed Daily</a>
-<a onclick="setView('finished')" id="menu-finished">&#x1F3C1; Finished Projects</a>
-<a onclick="setView('stats')" id="menu-stats">&#x1F4C8; Statistics</a>
-<a onclick="setView('profile')" id="menu-profile">&#x1F464; My Profile</a>
+<a onclick="setView('all')" id="menu-all" class="active"><i data-lucide="layout-grid" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:6px"></i> All Airdrops</a>
+<a onclick="setView('done')" id="menu-done"><i data-lucide="check-circle" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:6px"></i> Completed Daily</a>
+<a onclick="setView('notdone')" id="menu-notdone"><i data-lucide="x-circle" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:6px"></i> Not Completed</a>
+<a onclick="setView('finished')" id="menu-finished"><i data-lucide="flag" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:6px"></i> Finished Projects</a>
+<a onclick="setView('stats')" id="menu-stats"><i data-lucide="bar-chart-2" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:6px"></i> Statistics</a>
+<a onclick="setView('profile')" id="menu-profile"><i data-lucide="user" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:6px"></i> My Profile</a>
 
 <hr style="border:none;border-top:1px solid #1e293b;margin:16px 0">
 
 <div class="category-section">
 <div class="category-toggle" onclick="toggleCategories()">
-<span>&#x1F4C1; Categories</span>
+<span><i data-lucide="folder" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:6px"></i> Categories</span>
 <i data-lucide="chevron-down"></i>
 </div>
 
 <div class="category-list" id="categoryList">
-<a onclick="setView('defi')" id="menu-defi">&#x1F52E; DeFi</a>
-<a onclick="setView('layer1')" id="menu-layer1">&#x1F537; Layer-1</a>
-<a onclick="setView('depin')" id="menu-depin">&#x1F4E1; DePIN</a>
-<a onclick="setView('privacy')" id="menu-privacy">&#x1F512; Privacy</a>
-<a onclick="setView('ai')" id="menu-ai">&#x1F916; AI</a>
-<a onclick="setView('robotic')" id="menu-robotic">&#x1F9BE; Robotic</a>
+<a onclick="setView('defi')" id="menu-defi"><i data-lucide="coins" style="width:14px;height:14px;display:inline-block;vertical-align:middle;margin-right:6px"></i> DeFi</a>
+<a onclick="setView('layer1')" id="menu-layer1"><i data-lucide="layers" style="width:14px;height:14px;display:inline-block;vertical-align:middle;margin-right:6px"></i> Layer-1</a>
+<a onclick="setView('depin')" id="menu-depin"><i data-lucide="radio" style="width:14px;height:14px;display:inline-block;vertical-align:middle;margin-right:6px"></i> DePIN</a>
+<a onclick="setView('privacy')" id="menu-privacy"><i data-lucide="shield" style="width:14px;height:14px;display:inline-block;vertical-align:middle;margin-right:6px"></i> Privacy</a>
+<a onclick="setView('ai')" id="menu-ai"><i data-lucide="cpu" style="width:14px;height:14px;display:inline-block;vertical-align:middle;margin-right:6px"></i> AI</a>
+<a onclick="setView('robotic')" id="menu-robotic"><i data-lucide="settings" style="width:14px;height:14px;display:inline-block;vertical-align:middle;margin-right:6px"></i> Robotic</a>
 </div>
 </div>
 
 <hr style="border:none;border-top:1px solid #1e293b;margin:16px 0">
 
 <div style="padding:10px 0">
-<button class="button" style="width:100%;margin-bottom:8px" onclick="exportData()">&#x1F4E5; Export Data</button>
-<button class="button button-secondary" style="width:100%" onclick="document.getElementById('importFile').click()">&#x1F4E4; Import Data</button>
+<button class="button" style="width:100%;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:6px" onclick="exportData()">
+    <i data-lucide="download"></i> Export Data
+</button>
+<button class="button button-secondary" style="width:100%;display:flex;align-items:center;justify-content:center;gap:6px" onclick="document.getElementById('importFile').click()">
+    <i data-lucide="upload"></i> Import Data
+</button>
 <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
 </div>
 
@@ -638,9 +644,9 @@ body{background:linear-gradient(180deg,#0b1220,#020617);color:#e2e8f0;min-height
 </div>
 
 <div style="display:flex;gap:8px;flex-wrap:wrap">
-<button class="button" onclick="requestNotificationPermission()">ðŸ”” Enable Notifications</button>
-<button class="button" onclick="startDaily()">â–¶ï¸ Start Daily</button>
-<button class="button" onclick="openModal()">âž• Add Airdrop</button>
+<button class="button" onclick="requestNotificationPermission()" style="display:flex;align-items:center;gap:6px"><i data-lucide="bell"></i> Enable Notifications</button>
+<button class="button" onclick="startDaily()" style="display:flex;align-items:center;gap:6px"><i data-lucide="play"></i> Start Daily</button>
+<button class="button" onclick="openModal()" style="display:flex;align-items:center;gap:6px"><i data-lucide="plus"></i> Add Airdrop</button>
 </div>
 </div>
 
@@ -699,19 +705,19 @@ body{background:linear-gradient(180deg,#0b1220,#020617);color:#e2e8f0;min-height
         <div style="display:flex;align-items:center;gap:20px;position:relative">
             <!-- Avatar -->
             <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:32px;border:3px solid #1e293b;flex-shrink:0">
-                ðŸš€
+                
             </div>
             
             <!-- Info -->
             <div>
                 <h2 style="font-size:24px;font-weight:700;color:white;margin-bottom:4px">heisenberg-bit</h2>
-                <div style="color:#38bdf8;font-size:14px;margin-bottom:8px">Airdrop Hunter ðŸš€</div>
+                <div style="color:#38bdf8;font-size:14px;margin-bottom:8px">Airdrop Hunter </div>
                 <div style="display:flex;gap:8px;flex-wrap:wrap">
                     <span style="background:#0f172a;border:1px solid #1e293b;padding:4px 10px;border-radius:20px;font-size:12px;color:#94a3b8">
-                        ðŸŒ GitHub: heisenberg-bit
+                         GitHub: heisenberg-bit
                     </span>
                     <span style="background:#0f172a;border:1px solid #1e293b;padding:4px 10px;border-radius:20px;font-size:12px;color:#94a3b8" id="profileJoinedDate">
-                        ðŸ“… Tracking since: -
+                         Tracking since: -
                     </span>
                 </div>
             </div>
@@ -725,7 +731,7 @@ body{background:linear-gradient(180deg,#0b1220,#020617);color:#e2e8f0;min-height
     <!-- Completion Rate Bar -->
     <div style="background:#020617;border:1px solid #1e293b;border-radius:12px;padding:20px;margin-bottom:20px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-            <h3 style="color:#38bdf8;font-size:15px">ðŸ“Š Today's Completion Rate</h3>
+            <h3 style="color:#38bdf8;font-size:15px"> Today's Completion Rate</h3>
             <span id="completionPct" style="color:white;font-weight:700;font-size:18px">0%</span>
         </div>
         <div style="background:#0f172a;border-radius:20px;height:12px;overflow:hidden">
@@ -739,13 +745,13 @@ body{background:linear-gradient(180deg,#0b1220,#020617);color:#e2e8f0;min-height
 
     <!-- Active Projects -->
     <div style="background:#020617;border:1px solid #1e293b;border-radius:12px;padding:20px;margin-bottom:20px">
-        <h3 style="color:#38bdf8;font-size:15px;margin-bottom:16px">âš¡ Active Projects</h3>
+        <h3 style="color:#38bdf8;font-size:15px;margin-bottom:16px"> Active Projects</h3>
         <div id="profileActiveProjects"></div>
     </div>
 
     <!-- Category Breakdown -->
     <div style="background:#020617;border:1px solid #1e293b;border-radius:12px;padding:20px;margin-bottom:20px">
-        <h3 style="color:#38bdf8;font-size:15px;margin-bottom:16px">ðŸ·ï¸ Category Breakdown</h3>
+        <h3 style="color:#38bdf8;font-size:15px;margin-bottom:16px"> Category Breakdown</h3>
         <div id="profileCategories" style="display:flex;flex-direction:column;gap:10px"></div>
     </div>
 
@@ -757,7 +763,7 @@ body{background:linear-gradient(180deg,#0b1220,#020617);color:#e2e8f0;min-height
 
     <!-- Timeline -->
     <div style="background:#020617;border:1px solid #1e293b;border-radius:12px;padding:20px">
-        <h3 style="color:#38bdf8;font-size:15px;margin-bottom:16px">ðŸ“… Join Timeline</h3>
+        <h3 style="color:#38bdf8;font-size:15px;margin-bottom:16px"> Join Timeline</h3>
         <div id="profileTimeline" style="display:flex;flex-direction:column;gap:10px"></div>
     </div>
 
@@ -783,7 +789,7 @@ body{background:linear-gradient(180deg,#0b1220,#020617);color:#e2e8f0;min-height
 <option value="privacy">&#x1F512; Privacy</option>
 <option value="ai">&#x1F916; AI</option>
 <option value="robotic">&#x1F9BE; Robotic</option>
-<option value="other">ðŸ“¦ Other</option>
+<option value="other">Other Other</option>
 </select>
 
 <input id="twitter" placeholder="Twitter Link">
@@ -795,8 +801,8 @@ body{background:linear-gradient(180deg,#0b1220,#020617);color:#e2e8f0;min-height
 <input id="joinDate" type="date">
 
 <div style="display:flex;gap:8px;margin-top:12px">
-<button class="button" onclick="saveAirdrop()" style="flex:1">ðŸ’¾ Save</button>
-<button class="button button-secondary" onclick="closeModal()" style="flex:1">âœ• Close</button>
+<button class="button" onclick="saveAirdrop()" style="flex:1">Save Save</button>
+<button class="button button-secondary" onclick="closeModal()" style="flex:1">X Close</button>
 </div>
 
 </div>
@@ -807,7 +813,7 @@ body{background:linear-gradient(180deg,#0b1220,#020617);color:#e2e8f0;min-height
 <div class="bio-box">
 <div class="bio-header">
 <span id="bioProjectName"></span>
-<span class="bio-close" onclick="closeBio()">âœ•</span>
+<span class="bio-close" onclick="closeBio()">X</span>
 </div>
 <div id="bioContent" class="bio-content"></div>
 </div>
@@ -902,7 +908,7 @@ function handleDrop(e){
         
         save()
         render()
-        showNotification("Reordered! ðŸ”„","Airdrop position updated","success")
+        showNotification("Reordered! Reset","Airdrop position updated","success")
     }
     
     return false
@@ -924,7 +930,7 @@ function requestNotificationPermission(){
     if("Notification" in window){
         Notification.requestPermission().then(permission=>{
             if(permission==="granted"){
-                showNotification("Notifications Enabled! âœ…","You'll receive reminders every 15 minutes","success")
+                showNotification("Notifications Enabled! ","You'll receive reminders every 15 minutes","success")
                 startNotificationCheck()
             }else{
                 showNotification("Permission Denied","Enable notifications in browser settings","error")
@@ -939,19 +945,19 @@ function requestNotificationPermission(){
 function startNotificationCheck(){
     if(notificationInterval) clearInterval(notificationInterval)
     
-    console.log("ðŸ”” Notification check started - will check every 15 minutes")
+    console.log(" Notification check started - will check every 15 minutes")
     console.log("Current permission:", Notification.permission)
     
     notificationInterval=setInterval(()=>{
         const incomplete=data.filter(a=>!a.done && !a.finished).length
-        console.log(`â° Notification check at ${new Date().toLocaleTimeString()}`)
+        console.log(` Notification check at ${new Date().toLocaleTimeString()}`)
         console.log(`   - Incomplete tasks: ${incomplete}`)
         console.log(`   - Permission: ${Notification.permission}`)
         
         if(incomplete>0 && Notification.permission==="granted"){
-            console.log("   âœ… Sending notification...")
+            console.log("    Sending notification...")
             try{
-                const notification = new Notification("Airdrop Reminder ðŸ””",{
+                const notification = new Notification("Airdrop Reminder",{
                     body:`You have ${incomplete} incomplete daily tasks!`,
                     icon:"https://img.icons8.com/fluency/96/rocket.png",
                     badge:"https://img.icons8.com/fluency/96/rocket.png",
@@ -962,16 +968,16 @@ function startNotificationCheck(){
                     window.focus()
                     this.close()
                 }
-                console.log("   âœ… Notification sent successfully!")
+                console.log("    Notification sent successfully!")
             }catch(err){
-                console.error("   âŒ Notification error:", err)
+                console.error("   x Notification error:", err)
             }
         }else{
             if(incomplete===0){
-                console.log("   â„¹ï¸ No incomplete tasks - notification skipped")
+                console.log("   i No incomplete tasks - notification skipped")
             }
             if(Notification.permission!=="granted"){
-                console.log("   âŒ Permission not granted - notification skipped")
+                console.log("   x Permission not granted - notification skipped")
             }
         }
     },900000) // Check every 15 minutes (900000ms)
@@ -980,8 +986,8 @@ function startNotificationCheck(){
     setTimeout(()=>{
         const incomplete=data.filter(a=>!a.done && !a.finished).length
         if(incomplete>0 && Notification.permission==="granted"){
-            console.log("ðŸ§ª Sending immediate test notification...")
-            new Notification("Airdrop Tracker Started! ðŸš€",{
+            console.log("Test Sending immediate test notification...")
+            new Notification("Airdrop Tracker Started!",{
                 body:`Tracking ${incomplete} incomplete tasks. You'll get reminders every 15 minutes.`,
                 icon:"https://img.icons8.com/fluency/96/rocket.png"
             })
@@ -1014,11 +1020,11 @@ function setView(view){
     
     const titles={
         all:"All Airdrops",
-        done:"âœ” Completed Daily",
-        notdone:"âœ– Not Completed Daily",
-        finished:"&#x1F3C1; Finished Projects",
-        stats:"&#x1F4C8; Statistics Dashboard",
-        profile:"&#x1F464; My Profile",
+        done:"Completed Daily",
+        notdone:"Not Completed Daily",
+        finished:"Finished Projects",
+        stats:"Statistics Dashboard",
+        profile:"My Profile",
         defi:"&#x1F52E; DeFi Category",
         layer1:"&#x1F537; Layer-1 Category",
         depin:"&#x1F4E1; DePIN Category",
@@ -1093,14 +1099,16 @@ function render(){
     
     filtered.forEach((a,i)=>{
         const realIndex=data.indexOf(a)
-        const status=a.done?"âœ”":"âœ–"
+        const status=a.done?
+            `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`:
+            `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`
         const statusClass=a.done?"status-check":"status-x"
         const finishedBadge=a.finished?
             "<span class='badge finished'>FINISHED</span>":
             "<span class='badge active-badge'>ACTIVE</span>"
         
         const categoryTag=a.category?
-            `<span class='tag tag-${a.category}'>${getCategoryIcon(a.category)} ${a.category.toUpperCase()}</span>`:
+            `<span class='tag tag-${a.category}'>${getCategoryIcon(a.category)}</span>`:
             ""
         
         const card=document.createElement("div")
@@ -1234,15 +1242,15 @@ function render(){
 
 function getCategoryIcon(category){
     const icons={
-        defi:"ðŸ”®",
-        layer1:"ðŸ”·",
-        depin:"ðŸ“¡",
-        privacy:"ðŸ”’",
-        ai:"ðŸ¤–",
-        robotic:"ðŸ¦¾",
-        other:"ðŸ“¦"
+        defi:"DeFi",
+        layer1:"L1",
+        depin:"DePIN",
+        privacy:"Privacy",
+        ai:"AI",
+        robotic:"Robot",
+        other:"Other"
     }
-    return icons[category]||"ðŸ“¦"
+    return icons[category]||"Other"
 }
 
 function renderStatistics(){
@@ -1350,17 +1358,17 @@ function renderProfile(){
     const earliestDate=joinDates.length>0?new Date(Math.min(...joinDates)):null
     if(earliestDate){
         document.getElementById("profileJoinedDate").innerHTML=
-            `ðŸ“… Tracking since: ${earliestDate.toLocaleDateString('en-GB',{month:'short',year:'numeric'})}`
+            ` Tracking since: ${earliestDate.toLocaleDateString('en-GB',{month:'short',year:'numeric'})}`
     }
 
     // Stats Cards
     const statsData=[
-        {label:"Total Airdrops",value:data.length,icon:"ðŸ“Š",color:"#38bdf8"},
-        {label:"Active Projects",value:active.length,icon:"âš¡",color:"#22c55e"},
-        {label:"Completed Today",value:completed.length,icon:"âœ…",color:"#a78bfa"},
-        {label:"Finished Projects",value:finished.length,icon:"ðŸ",color:"#f59e0b"},
-        {label:"Total Rewards",value:`$${totalRewards.toFixed(2)}`,icon:"ðŸ’°",color:"#facc15"},
-        {label:"Completion Rate",value:`${completionRate}%`,icon:"ðŸ“ˆ",color:"#ec4899"}
+        {label:"Total Airdrops",value:data.length,icon:"",color:"#38bdf8"},
+        {label:"Active Projects",value:active.length,icon:"",color:"#22c55e"},
+        {label:"Completed Today",value:completed.length,icon:"check",color:"#a78bfa"},
+        {label:"Finished Projects",value:finished.length,icon:"",color:"#f59e0b"},
+        {label:"Total Rewards",value:`$${totalRewards.toFixed(2)}`,icon:"",color:"#facc15"},
+        {label:"Completion Rate",value:`${completionRate}%`,icon:"",color:"#ec4899"}
     ]
 
     document.getElementById("profileStats").innerHTML=statsData.map(s=>`
@@ -1394,12 +1402,12 @@ function renderProfile(){
                     <img src="${a.image}" style="width:32px;height:32px;border-radius:50%;object-fit:cover" onerror="this.src='https://via.placeholder.com/32'">
                     <div>
                         <div style="color:#e2e8f0;font-weight:600;font-size:14px">${a.project}</div>
-                        <div style="color:#64748b;font-size:11px">${a.stage} Â· ${a.task}</div>
+                        <div style="color:#64748b;font-size:11px">${a.stage} - ${a.task}</div>
                     </div>
                 </div>
                 <div style="display:flex;align-items:center;gap:8px">
                     ${a.category?`<span style="background:#1e293b;padding:3px 8px;border-radius:6px;font-size:11px;color:#94a3b8">${getCategoryIcon(a.category)} ${a.category.toUpperCase()}</span>`:''}
-                    <span style="font-size:18px">${a.done?'âœ…':'âŒ'}</span>
+                    <span style="font-size:18px">${a.done?'':'x'}</span>
                 </div>
             </div>
             `).join("")}
@@ -1440,7 +1448,7 @@ function renderProfile(){
                     <img src="${a.image}" style="width:32px;height:32px;border-radius:50%;object-fit:cover" onerror="this.src='https://via.placeholder.com/32'">
                     <div>
                         <div style="color:#e2e8f0;font-weight:600;font-size:14px">${a.project}</div>
-                        <div style="color:#64748b;font-size:11px">Finished Â· Joined ${a.joinDate||'-'}</div>
+                        <div style="color:#64748b;font-size:11px">Finished - Joined ${a.joinDate||'-'}</div>
                     </div>
                 </div>
                 <div style="color:#facc15;font-weight:700;font-size:16px">
@@ -1475,7 +1483,7 @@ function renderProfile(){
                 </div>
                 <div style="margin-top:4px;display:flex;gap:6px">
                     <span style="background:#1e293b;padding:2px 8px;border-radius:4px;font-size:11px;color:#94a3b8">${a.stage}</span>
-                    <span style="background:${a.finished?'#78350f':a.done?'#14532d':'#1e3a5f'};padding:2px 8px;border-radius:4px;font-size:11px;color:${a.finished?'#f59e0b':a.done?'#22c55e':'#60a5fa'}">${a.finished?'ðŸ Finished':a.done?'âœ… Done':'â³ Active'}</span>
+                    <span style="background:${a.finished?'#78350f':a.done?'#14532d':'#1e3a5f'};padding:2px 8px;border-radius:4px;font-size:11px;color:${a.finished?'#f59e0b':a.done?'#22c55e':'#60a5fa'}">${a.finished?'Finished':a.done?'Done':'Active'}</span>
                 </div>
             </div>
         </div>
@@ -1493,7 +1501,7 @@ function exportData(){
     a.href=url
     a.download=`airdrop-tracker-${new Date().toISOString().split('T')[0]}.json`
     a.click()
-    showNotification("Export Success! ðŸ“¥",`Exported ${data.length} airdrops`,"success")
+    showNotification("Export Success! ",`Exported ${data.length} airdrops`,"success")
 }
 
 function importData(event){
@@ -1508,7 +1516,7 @@ function importData(event){
                 data=imported
                 save()
                 render()
-                showNotification("Import Success! ðŸ“¤",`Imported ${imported.length} airdrops`,"success")
+                showNotification("Import Success! ",`Imported ${imported.length} airdrops`,"success")
             }else{
                 showNotification("Import Failed","Invalid JSON format","error")
             }
@@ -1523,7 +1531,7 @@ function markFinished(i){
     data[i].finished=true
     save()
     render()
-    showNotification("Project Finished! ðŸ",data[i].project,"success")
+    showNotification("Project Finished! ",data[i].project,"success")
 }
 
 function openLink(i,type){
@@ -1560,12 +1568,12 @@ function showUndoNotification(previousState){
     undoNotif.style.gap="12px"
     undoNotif.innerHTML=`
         <div>
-            <div style="font-weight:700;margin-bottom:4px">Task Completed âœ…</div>
+            <div style="font-weight:700;margin-bottom:4px">Task Completed</div>
             <div style="font-size:14px;color:#94a3b8">${data[previousState.index].project}</div>
         </div>
         <button onclick="undoTaskCompletion(${previousState.index}, ${previousState.done}, '${previousState.lastActivity}')" 
                 style="background:#e2e8f0;color:#020617;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-weight:600;white-space:nowrap">
-            â†¶ Undo
+            Undo Undo
         </button>
     `
     document.body.appendChild(undoNotif)
@@ -1586,14 +1594,14 @@ function undoTaskCompletion(index, previousDone, previousActivity){
     // Remove all undo notifications
     document.querySelectorAll('.notification').forEach(n=>n.remove())
     
-    showNotification("Undone! â†¶",`${data[index].project} marked as incomplete`,"success")
+    showNotification("Undone! Undo",`${data[index].project} marked as incomplete`,"success")
 }
 
 function undoTask(index){
     data[index].done=false
     save()
     render()
-    showNotification("Undone! â†¶",`${data[index].project} marked as incomplete`,"success")
+    showNotification("Undone! Undo",`${data[index].project} marked as incomplete`,"success")
 }
 
 function deleteAirdrop(i){
@@ -1654,10 +1662,10 @@ function saveAirdrop(){
         obj.finished=data[editIndex].finished
         obj.lastActivity=data[editIndex].lastActivity
         data[editIndex]=obj
-        showNotification("Updated! âœï¸",obj.project,"success")
+        showNotification("Updated! ",obj.project,"success")
     }else{
         data.push(obj)
-        showNotification("Added! âœ…",obj.project,"success")
+        showNotification("Added!",obj.project,"success")
     }
     
     save()
@@ -1670,7 +1678,7 @@ function startDaily(){
     localStorage.setItem("lastReset",new Date().toDateString())
     save()
     render()
-    showNotification("Daily Reset! ðŸ”„","All tasks reset to incomplete","success")
+    showNotification("Daily Reset! Reset","All tasks reset to incomplete","success")
 }
 
 function checkDailyReset(){
